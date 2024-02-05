@@ -21,14 +21,12 @@ public enum Prioridade {
         return Decricao;
     }
 
-    //Staic pq não haverá necessidade de cria uma instância de perfil
-    //para chamar o código me outra partes do projeto
     public static Prioridade toEnum(Integer cod) {
-        if(cod == null) {
+        if (cod == null) {
             return null;
         }
-        for(Prioridade x : Prioridade.values()){
-            if(cod.equals(x.getCodigo())){
+        for (Prioridade x : Prioridade.values()) {
+            if (cod.equals(x.getCodigo())) {
                 return x;
             }
         }

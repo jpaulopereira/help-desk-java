@@ -21,14 +21,12 @@ public enum Status {
         return Decricao;
     }
 
-    //Staic pq não haverá necessidade de cria uma instância de perfil
-    //para chamar o código me outra partes do projeto
     public static Status toEnum(Integer cod) {
-        if(cod == null) {
+        if (cod == null) {
             return null;
         }
-        for(Status x : Status.values()){
-            if(cod.equals(x.getCodigo())){
+        for (Status x : Status.values()) {
+            if (cod.equals(x.getCodigo())) {
                 return x;
             }
         }

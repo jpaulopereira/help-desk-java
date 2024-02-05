@@ -26,11 +26,11 @@ public enum Perfil {
     //Staic pq não haverá necessidade de cria uma instância de perfil
     //para chamar o código me outra partes do projeto
     public static Perfil toEnum(Integer cod) {
-        if(cod == null) {
+        if (cod == null) {
             return null;
         }
-        for(Perfil x : Perfil.values()){
-            if(cod.equals(x.getCodigo())){
+        for (Perfil x : Perfil.values()) {
+            if (cod.equals(x.getCodigo())) {
                 return x;
             }
         }
