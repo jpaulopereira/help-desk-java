@@ -5,6 +5,7 @@ public enum Status {
     ANDAMENTO(1, "ANDAMENTO"),
     ENCERRADO(0, "ENCERRADO");
 
+
     private Integer codigo;
     private String Decricao;
 
