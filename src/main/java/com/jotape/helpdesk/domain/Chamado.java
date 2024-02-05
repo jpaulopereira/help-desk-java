@@ -1,8 +1,8 @@
 package com.jotape.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jotape.helpdesk.domain.enums.Prioridade;
-import com.jotape.helpdesk.domain.enums.Status;
+import com.jotape.helpdesk.enums.Prioridade;
+import com.jotape.helpdesk.enums.Status;
 
 import javax.persistence.*;
 import java.io.Serializable;

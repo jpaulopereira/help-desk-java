@@ -1,4 +1,4 @@
-package com.jotape.helpdesk.domain.enums;
+package com.jotape.helpdesk.enums;
 
 public enum Status {
     ABERTO(0, "ABERTO"),

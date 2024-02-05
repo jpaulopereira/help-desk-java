@@ -1,6 +1,4 @@
-package com.jotape.helpdesk.domain.enums;
-
-import javax.persistence.criteria.CriteriaBuilder;
+package com.jotape.helpdesk.enums;
 
 public enum Perfil {
     ADMIN(0, "ROLE_ADMIN"),

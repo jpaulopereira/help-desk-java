@@ -2,7 +2,7 @@ package com.jotape.helpdesk.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jotape.helpdesk.domain.enums.Perfil;
+import com.jotape.helpdesk.enums.Perfil;
 
 import javax.persistence.*;
 import java.io.Serializable;
