@@ -6,11 +6,11 @@ public enum Perfil {
     TECNICO(0, "ROLE_TECNICO");
 
     private Integer codigo;
-    private String Decricao;
+    private String decricao;
 
     Perfil(Integer codigo, String decricao) {
         this.codigo = codigo;
-        Decricao = decricao;
+        this.decricao = decricao;
     }
 
     public Integer getCodigo() {
@@ -18,7 +18,7 @@ public enum Perfil {
     }
 
     public String getDecricao() {
-        return Decricao;
+        return decricao;
     }
 
     //Staic pq não haverá necessidade de cria uma instância de perfil

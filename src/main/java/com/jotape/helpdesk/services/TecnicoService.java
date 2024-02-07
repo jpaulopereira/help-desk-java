@@ -8,8 +8,8 @@ import com.jotape.helpdesk.exception.ObjectNotFoundException;
 import com.jotape.helpdesk.repositories.PessoaRepository;
 import com.jotape.helpdesk.repositories.TecnicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +23,9 @@ public class TecnicoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado, id: " + id));
@@ -34,9 +37,33 @@ public class TecnicoService {
 
     public Tecnico create(TecnicoDTO objDTO) {
         objDTO.setId(null);
+        objDTO.setSenha(encoder.encode(objDTO.getSenha()));
         validaPorCpfEEmail(objDTO);
         Tecnico newObj = new Tecnico(objDTO);
         return repository.save(newObj);
+    }
+
+    public Tecnico update(Integer id, TecnicoDTO objDTO) {
+        //evita modificar o Id Pega o
+        objDTO.setId(id);
+
+        //puxa o método
+        Tecnico oldObj = findById(id);
+
+        //usa as validações já criadas
+        validaPorCpfEEmail(objDTO);
+        oldObj = new Tecnico(objDTO);
+        return repository.save(oldObj);
+    }
+
+    public void delete(Integer id) {
+        Tecnico obj = findById(id);
+        //se o técnico tiver uma chamada aberto, não e possível apaga-lo
+        //se o chamados for > 1 indica que tem chamados abertos
+        if (obj.getChamados().size() > 0) {
+            throw new DataIntegrityViolationException("O técnico possui ordens de serviço e não pode ser apagado");
+        }
+        repository.deleteById(id);
     }
 
     private void validaPorCpfEEmail(TecnicoDTO objDTO) {

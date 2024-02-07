@@ -3,6 +3,7 @@ package com.jotape.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jotape.helpdesk.enums.Perfil;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,14 +26,14 @@ public abstract class Pessoa implements Serializable {
     protected Integer id;
     protected String nome;
 
-    //coluna única no banco de dados
+    @CPF
     @Column(unique = true)
     protected String cpf;
 
     @Column(unique = true)
     protected String email;
 
-    protected String senha;
+   protected String senha;
 
     @ElementCollection(fetch = FetchType.EAGER) //essa é uma coleção do tipo integer, informa para passa a lista de perfis
     @CollectionTable(name = "PERFIS")

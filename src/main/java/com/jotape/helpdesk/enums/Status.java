@@ -7,11 +7,11 @@ public enum Status {
 
 
     private Integer codigo;
-    private String Decricao;
+    private String decricao;
 
     Status(Integer codigo, String decricao) {
         this.codigo = codigo;
-        Decricao = decricao;
+        this.decricao = decricao;
     }
 
     public Integer getCodigo() {
@@ -19,7 +19,7 @@ public enum Status {
     }
 
     public String getDecricao() {
-        return Decricao;
+        return decricao;
     }
 
     public static Status toEnum(Integer cod) {

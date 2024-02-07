@@ -6,11 +6,11 @@ public enum Prioridade {
     ALTA(0, "ALTA");
 
     private Integer codigo;
-    private String Decricao;
+    private String decricao;
 
     Prioridade(Integer codigo, String decricao) {
         this.codigo = codigo;
-        Decricao = decricao;
+        this.decricao = decricao;
     }
 
     public Integer getCodigo() {
@@ -18,7 +18,7 @@ public enum Prioridade {
     }
 
     public String getDecricao() {
-        return Decricao;
+        return decricao;
     }
 
     public static Prioridade toEnum(Integer cod) {
