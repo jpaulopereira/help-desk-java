@@ -1,76 +1,51 @@
 package com.jotape.helpdesk.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jotape.helpdesk.dto.CredenciaisDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
+public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
+
     private JWTUtil jwtUtil;
+    private UserDetailsService userDetailsService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
-        super();
-        this.authenticationManager = authenticationManager;
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService userDetailsService) {
+        super(authenticationManager);
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try {
-            CredenciaisDTO credenciaisDTO = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDTO.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(credenciaisDTO.getEmail(), credenciaisDTO.getSenha(), new ArrayList<>());
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            return authentication;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        //pega o valor do header
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            //pega o token a depois do index 7 ex:(Bearer )
+            UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(header.substring(7));
+            if (authenticationToken != null) {
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
+        chain.doFilter(request, response);
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-
-        String username = ((UserSS) authResult.getPrincipal()).getUsername();
-        String token = jwtUtil.generateToken(username);
-        response.setHeader("access-control-expose-headers", "Authorization");
-        response.setHeader("Authorization", "Bearer" + token);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(401);
-        response.setContentType("application/json");
-
-
-
-        try (PrintWriter writer = response.getWriter()) {
-            writer.append(json());
-        } catch (IOException e) {
-            // Tratar a exceção adequadamente
-            e.printStackTrace();
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        if (jwtUtil.tokenValido(token)) {
+            String username = jwtUtil.getUsername(token);
+            UserDetails details = userDetailsService.loadUserByUsername(username);
+            return new UsernamePasswordAuthenticationToken(details.getUsername(), null, details.getAuthorities());
         }
+        return null;
     }
 
-    private CharSequence json() {
-        long date = new Date().getTime();
-        return "{"
-                + "\"timestamp\": " + date + ", "
-                + "\"status\": 401, "
-                + "\"error\": \"Não autorizado\", "
-                + "\"message\": \"Email ou senha inválidos\", "
-                + "\"path\": \"/login\""
-                + "}";
-    }
+
 }
