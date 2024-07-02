@@ -2,14 +2,11 @@ package com.jotape.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jotape.helpdesk.dto.ClienteDTO;
-import com.jotape.helpdesk.dto.TecnicoDTO;
 import com.jotape.helpdesk.enums.Perfil;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +37,7 @@ public class Cliente extends Pessoa {
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
         this.senha = obj.getSenha();
-        this.perfis = obj.getPerfis().stream().map(x-> x.getCodigo()).collect(Collectors.toSet());
+        this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = obj.getDataCriacao();
     }
 

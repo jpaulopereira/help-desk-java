@@ -14,13 +14,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-//Classe abstrata = Não pode criar instâncias dessa classe
+//Classe abstrata -> Não pode criar instâncias dessa classe
 public abstract class Pessoa implements Serializable {
 
-    //Para criar um sequencia de bite, para trafego na rede
     private static final long serialVersionUID = 1L;
 
-    //protected -> as classe filhas tem acesso ao atributo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
@@ -33,22 +31,18 @@ public abstract class Pessoa implements Serializable {
     @Column(unique = true)
     protected String email;
 
-   protected String senha;
+    protected String senha;
 
-    @ElementCollection(fetch = FetchType.EAGER) //essa é uma coleção do tipo integer, informa para passa a lista de perfis
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PERFIS")
-    //new HashSet<>() == evita NullPointerException
-    //Integer para armazenar os códigos do enum
+
     protected Set<Integer> perfis = new HashSet<>();
 
-    //pega o momento atual em que a instância do obj foi criada
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dataCriacao = LocalDate.now();
 
     public Pessoa() {
         super();
-
-        //Caso ao criar um novo cliente/técnico sem passar um parâmetro, será setado o Perfil.CLIENTE
         addPerfils(Perfil.CLIENTE);
     }
 
@@ -103,7 +97,7 @@ public abstract class Pessoa implements Serializable {
     }
 
     public Set<Perfil> getPerfis() {
-        return perfis.stream().map(x->Perfil.toEnum(x)).collect(Collectors.toSet());
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
     }
 
     public void addPerfils(Perfil perfils) {

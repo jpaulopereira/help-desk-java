@@ -19,7 +19,6 @@ public class Chamado implements Serializable {
     private Integer id;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    // O valor não é passado por parâmetro. Pega o valor na hora da criação
     private LocalDate dataAbertura = LocalDate.now();
     @JsonFormat(pattern = "dd/MM/yyyy")
 
@@ -41,7 +40,6 @@ public class Chamado implements Serializable {
         super();
     }
 
-    //Não passa as datas porque são geradas pelo sistema
     public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Tecnico tecnico, Cliente cliente) {
         this.id = id;
         this.prioridade = prioridade;

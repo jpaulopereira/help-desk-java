@@ -1,11 +1,8 @@
 package com.jotape.helpdesk.resources;
 
 import com.jotape.helpdesk.domain.Chamado;
-import com.jotape.helpdesk.domain.Tecnico;
 import com.jotape.helpdesk.dto.ChamadoDTO;
-import com.jotape.helpdesk.dto.TecnicoDTO;
 import com.jotape.helpdesk.services.ChamadoService;
-import com.jotape.helpdesk.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +20,6 @@ public class ChamadoResource {
     @Autowired
     private ChamadoService chamadoService;
 
-    //ResponseEntity -> representa toda a reposta http -> status head body
     @GetMapping(value = "/{id}")
     public ResponseEntity<ChamadoDTO> findById(@PathVariable Integer id) {
         Chamado obj = chamadoService.findById(id);
@@ -53,5 +49,4 @@ public class ChamadoResource {
         Chamado obj = chamadoService.update(id, objDTO);
         return ResponseEntity.ok().body(new ChamadoDTO(obj));
     }
-
 }

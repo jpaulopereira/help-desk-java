@@ -21,8 +21,6 @@ public enum Perfil {
         return decricao;
     }
 
-    //Staic pq não haverá necessidade de cria uma instância de perfil
-    //para chamar o código me outra partes do projeto
     public static Perfil toEnum(Integer cod) {
         if (cod == null) {
             return null;

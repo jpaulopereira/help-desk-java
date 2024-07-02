@@ -21,7 +21,6 @@ public class TecnicoResource {
     @Autowired
     private TecnicoService tecnicoService;
 
-    //ResponseEntity -> representa toda a reposta http -> status head body
     @GetMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id) {
         Tecnico obj = tecnicoService.findById(id);
@@ -54,7 +53,6 @@ public class TecnicoResource {
         return ResponseEntity.ok().body(new TecnicoDTO(obj));
     }
 
-    //pode ser void ou objDTO
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> delete(@Valid @PathVariable Integer id) {

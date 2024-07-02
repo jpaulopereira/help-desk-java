@@ -44,13 +44,10 @@ public class TecnicoService {
     }
 
     public Tecnico update(Integer id, TecnicoDTO objDTO) {
-        //evita modificar o Id Pega o
         objDTO.setId(id);
 
-        //puxa o método
         Tecnico oldObj = findById(id);
 
-        //usa as validações já criadas
         validaPorCpfEEmail(objDTO);
         oldObj = new Tecnico(objDTO);
         return repository.save(oldObj);
@@ -58,8 +55,7 @@ public class TecnicoService {
 
     public void delete(Integer id) {
         Tecnico obj = findById(id);
-        //se o técnico tiver uma chamada aberto, não e possível apaga-lo
-        //se o chamados for > 1 indica que tem chamados abertos
+
         if (obj.getChamados().size() > 0) {
             throw new DataIntegrityViolationException("O técnico possui ordens de serviço e não pode ser apagado");
         }
